@@ -1,0 +1,6 @@
+{
+  "name": "نظام المعلم والسناتر",
+  "description": "نظام الإدارة الرقمية الشامل للمدرسين والسناتر التعليمية متعددة الفروع مع حوكمة كاملة وصالحيات وروابط محاسبية ذكية",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
