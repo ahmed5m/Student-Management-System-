@@ -233,6 +233,41 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         _scanResult.value = null
     }
 
+    fun payStudentDebtDirectly(barcode: String, amount: Double, branchId: Int) {
+        viewModelScope.launch {
+            val student = repository.getStudentByBarcode(barcode)
+            if (student != null) {
+                // Mark registration fee as paid in repository
+                repository.updateStudent(student.copy(isRegistrationFeePaid = true))
+                
+                // Record the financial transaction so ledger updates in real-time
+                val tx = Transaction(
+                    studentBarcode = barcode,
+                    type = "Subscription",
+                    amount = amount,
+                    discountAmount = 0.0,
+                    tutorRatio = 0.8,
+                    branchId = branchId,
+                    notes = "تسديد مستحقات فورية (بوابة فوري Fawry) للطالب: ${student.name}"
+                )
+                repository.insertTransaction(tx)
+                
+                // Instantly update active scanning result status to reflect clean status
+                val currentResult = _scanResult.value
+                if (currentResult != null && currentResult.barcode == barcode) {
+                    _scanResult.value = currentResult.copy(
+                        message = "تمت تسوية مديونية الطالب وسداد المبلغ (${amount} ج.م) بالكامل بنجاح عبر Fawry! ✨",
+                        alerts = currentResult.alerts.copy(
+                            hasFinancialDebt = false,
+                            debtAmount = 0.0,
+                            hasBookDebt = false
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     // Direct Database Insert operations
     fun createStudent(student: Student) {
         viewModelScope.launch {

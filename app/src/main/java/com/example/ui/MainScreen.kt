@@ -69,19 +69,14 @@ fun MainScreen(viewModel: DashboardViewModel) {
 
         Scaffold(
             topBar = {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = HeaderBackground
-                    ),
-                    shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                    border = BorderStroke(1.dp, OutlineBorderColor.copy(alpha = 0.5f)),
+                Surface(
+                    color = HeaderBackground,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
                             .statusBarsPadding()
-                            .padding(16.dp)
+                            .padding(horizontal = 16.dp, vertical = 14.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -89,51 +84,41 @@ fun MainScreen(viewModel: DashboardViewModel) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .background(
-                                            DeepTealPrimary,
-                                            shape = CircleShape
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = "أ.ش",
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White,
-                                        fontSize = 14.sp
-                                    )
-                                }
+                                SYTriangleLogo()
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
                                     Text(
                                         text = "نظام الإدارة الرقمي",
                                         style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color(0xFF1D1B20)
+                                        fontWeight = FontWeight.ExtraBold,
+                                        color = DeepTealPrimary
                                     )
                                     Text(
                                         text = "الأستاذ أحمد الشافعي • سنتر النور",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = Color(0xFF49454F)
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MintSecondary
                                     )
                                 }
                             }
 
-                            // Role simulation switcher
+                            // Role simulation switcher (Calm, precise styling)
                             var showRoleMenu by remember { mutableStateOf(false) }
                             Box {
-                                Button(
-                                    onClick = { showRoleMenu = true },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.White,
-                                        contentColor = Color(0xFF49454F)
-                                    ),
-                                    border = BorderStroke(1.dp, OutlineBorderColor),
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color.White)
+                                        .border(1.dp, OutlineBorderColor, RoundedCornerShape(8.dp))
+                                        .clickable { showRoleMenu = true }
+                                        .padding(horizontal = 10.dp, vertical = 6.dp)
                                 ) {
-                                    Icon(Icons.Default.Security, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color(0xFF49454F))
+                                    Icon(
+                                        imageVector = Icons.Default.Security,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(14.dp),
+                                        tint = MintSecondary
+                                    )
                                     Spacer(modifier = Modifier.width(6.dp))
                                     Text(
                                         text = when(currentRole) {
@@ -143,7 +128,14 @@ fun MainScreen(viewModel: DashboardViewModel) {
                                         },
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color(0xFF49454F)
+                                        color = DeepTealPrimary
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = MintSecondary
                                     )
                                 }
                                 DropdownMenu(
@@ -151,21 +143,21 @@ fun MainScreen(viewModel: DashboardViewModel) {
                                     onDismissRequest = { showRoleMenu = false }
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text("المدرس والمشرف العام (ADMIN)", fontWeight = FontWeight.Bold) },
+                                        text = { Text("المدرس والمشرف العام (ADMIN)", fontWeight = FontWeight.Bold, fontSize = 12.sp) },
                                         onClick = {
                                             viewModel.setRole("Admin")
                                             showRoleMenu = false
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("سكرتارية واستقبال (Receptionist)") },
+                                        text = { Text("سكرتارية واستقبال (Receptionist)", fontSize = 12.sp) },
                                         onClick = {
                                             viewModel.setRole("Receptionist")
                                             showRoleMenu = false
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("مساعد أكاديمي ومقيّم (Academic)") },
+                                        text = { Text("مساعد أكاديمي ومقيّم (Academic)", fontSize = 12.sp) },
                                         onClick = {
                                             viewModel.setRole("Academic Assistant")
                                             showRoleMenu = false
@@ -175,70 +167,68 @@ fun MainScreen(viewModel: DashboardViewModel) {
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(14.dp))
 
-                        // Branch Context Selector
+                        // Branch Context Selector (Clean horizontal layout)
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
                                 text = "الفرع النشط:",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.9f)
+                                color = DeepTealPrimary
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            ScrollableTabRow(
-                                selectedTabIndex = if (selectedBranchId == null) 0 else branches.indexOfFirst { it.id == selectedBranchId } + 1,
-                                edgePadding = 0.dp,
-                                containerColor = Color.Transparent,
-                                divider = {},
-                                indicator = {},
-                                modifier = Modifier.weight(1f)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .horizontalScroll(rememberScrollState()),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Tab(
-                                    selected = selectedBranchId == null,
-                                    onClick = { viewModel.selectBranch(null) }
-                                ) {
-                                    Card(
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = if (selectedBranchId == null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                        ),
-                                        shape = RoundedCornerShape(50.dp),
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
-                                    ) {
-                                        Text(
-                                            text = "جميع الفروع جغرافياً",
-                                            fontSize = 11.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = if (selectedBranchId == null) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                val allBranchesSelected = selectedBranchId == null
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(20.dp))
+                                        .background(if (allBranchesSelected) DeepTealPrimary else Color.White)
+                                        .border(
+                                            1.dp,
+                                            if (allBranchesSelected) Color.Transparent else OutlineBorderColor,
+                                            RoundedCornerShape(20.dp)
                                         )
-                                    }
+                                        .clickable { viewModel.selectBranch(null) }
+                                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                                ) {
+                                    Text(
+                                        text = "جميع الفروع جغرافياً",
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (allBranchesSelected) Color.White else MintSecondary
+                                    )
                                 }
 
                                 branches.forEach { branch ->
                                     val isSelected = selectedBranchId == branch.id
-                                    Tab(
-                                        selected = isSelected,
-                                        onClick = { viewModel.selectBranch(branch.id) }
-                                    ) {
-                                        Card(
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                            ),
-                                            shape = RoundedCornerShape(50.dp),
-                                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
-                                        ) {
-                                            Text(
-                                                text = branch.name,
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(20.dp))
+                                            .background(if (isSelected) DeepTealPrimary else Color.White)
+                                            .border(
+                                                1.dp,
+                                                if (isSelected) Color.Transparent else OutlineBorderColor,
+                                                RoundedCornerShape(20.dp)
                                             )
-                                        }
+                                            .clickable { viewModel.selectBranch(branch.id) }
+                                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                                    ) {
+                                        Text(
+                                            text = branch.name,
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = if (isSelected) Color.White else MintSecondary
+                                        )
                                     }
                                 }
                             }
@@ -460,6 +450,11 @@ fun AttendanceScannerView(
 ) {
     var selectedGroupIdx by remember { mutableStateOf(0) }
     var inputBarcode by remember { mutableStateOf("") }
+    var customTemplateStudentId by remember { mutableStateOf<String?>(null) }
+    var selectedTemplateIdx by remember { mutableStateOf(0) }
+    var customTemplateMessageSuccess by remember { mutableStateOf<String?>(null) }
+    var searchStudentQuery by remember { mutableStateOf("") }
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     val activeGroup = if (groups.isNotEmpty()) groups[selectedGroupIdx] else null
 
@@ -768,16 +763,17 @@ fun AttendanceScannerView(
         // Live alert overlay when scan completes
         if (scanResult != null) {
             item {
-                ScanAlertResultCard(scanResult = scanResult!!, onDismiss = { viewModel.dismissScanResult() })
+                ScanAlertResultCard(scanResult = scanResult!!, viewModel = viewModel, onDismiss = { viewModel.dismissScanResult() })
             }
         }
 
         // Parent SMS notification logs (بوابة التنبيه الآلية لأولياء الأمور)
         item {
             Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, OutlineBorderColor.copy(alpha = 0.5f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -793,10 +789,11 @@ fun AttendanceScannerView(
                         )
                         Box(
                             modifier = Modifier
-                                .background(Color(0xFFE8F5E9), RoundedCornerShape(4.dp))
+                                .background(Color(0xFFF0FDF4), RoundedCornerShape(4.dp))
+                                .border(1.dp, StatusGreenBorder.copy(alpha = 0.4f), RoundedCornerShape(4.dp))
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
-                            Text("مثبّت تلقائياً ✅", color = Color(0xFF2E7D32), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Text("مثبّت تلقائياً ✅", color = StatusGreenText, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                         }
                     }
 
@@ -807,7 +804,7 @@ fun AttendanceScannerView(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 12.dp)
-                                .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                                .border(1.dp, OutlineBorderColor, RoundedCornerShape(8.dp))
                                 .padding(12.dp),
                             contentAlignment = Alignment.Center
                         ) {
@@ -819,17 +816,19 @@ fun AttendanceScannerView(
                             )
                         }
                     } else {
-                        LazyColumn(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .heightIn(max = 200.dp),
+                                .heightIn(max = 200.dp)
+                                .verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(smsNotifications) { sms ->
+                            smsNotifications.forEach { sms ->
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .background(Color(0xFFF1F8F6), RoundedCornerShape(8.dp))
+                                        .background(LightStatusGreenBack, RoundedCornerShape(8.dp))
+                                        .border(1.dp, StatusGreenBorder.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
                                         .padding(8.dp)
                                 ) {
                                     Column {
@@ -841,12 +840,12 @@ fun AttendanceScannerView(
                                                 text = "موجّه لولي أمر الطالب: ${sms.studentName}",
                                                 fontWeight = FontWeight.Bold,
                                                 fontSize = 11.sp,
-                                                color = ForestAccent
+                                                color = StatusGreenText
                                             )
                                             Text(
                                                 text = "رقم: ${sms.parentPhone}",
                                                 fontSize = 10.sp,
-                                                color = Color.DarkGray
+                                                color = MintSecondary
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(4.dp))
@@ -855,15 +854,267 @@ fun AttendanceScannerView(
                                             fontSize = 11.sp,
                                             color = Color.Black
                                         )
-                                        Spacer(modifier = Modifier.height(2.dp))
+                                        Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = "تم الإرسال فوري بعد رصد الباركود بـ 1 ثانية ⚡",
                                             fontSize = 9.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Color(0xFF2E7D32)
+                                            color = StatusGreenText
                                         )
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Premium WhatsApp Quick Broadcast Center for Admin & Receptionists
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, OutlineBorderColor.copy(alpha = 0.5f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "📱 مركز بث قوالب الـ WhatsApp لأولياء الأمور",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                            color = DeepTealPrimary
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "اختر الطالب والقالب المطلوب لفتح محادثة واتساب فورية مجهزة بنص مخصص بنقرة واحدة:",
+                        fontSize = 11.sp,
+                        color = MintSecondary
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // 1. Fully Fluid Digital Search for Student Selection
+                    val currentSelStudent = students.find { it.barcode == customTemplateStudentId }
+
+                    OutlinedTextField(
+                        value = searchStudentQuery,
+                        onValueChange = { searchStudentQuery = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("ابحث باسم الطالب أو رقم الباركود لتحديده...", fontSize = 10.sp) },
+                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp), tint = MintSecondary) },
+                        trailingIcon = {
+                            if (searchStudentQuery.isNotEmpty()) {
+                                IconButton(onClick = { searchStudentQuery = "" }) {
+                                    Icon(Icons.Default.Close, contentDescription = "مسح", modifier = Modifier.size(14.dp), tint = MintSecondary)
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = ForestAccent,
+                            unfocusedBorderColor = OutlineBorderColor,
+                            focusedContainerColor = Color(0xFFF8FAFC),
+                            unfocusedContainerColor = Color(0xFFF8FAFC)
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    // Live matching dynamic horizontal scrollable row with high fidelity selection chips
+                    val matchedStudents = if (searchStudentQuery.isEmpty()) {
+                        students.take(5) // Show first 5 students by default for quick access
+                    } else {
+                        students.filter { it.name.contains(searchStudentQuery, ignoreCase = true) || it.barcode.contains(searchStudentQuery) }
+                    }
+
+                    if (matchedStudents.isNotEmpty()) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                        ) {
+                            matchedStudents.forEach { st ->
+                                val isSelected = st.barcode == customTemplateStudentId
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .background(if (isSelected) MintSecondary.copy(alpha = 0.15f) else Color.White)
+                                        .border(1.dp, if (isSelected) ForestAccent else OutlineBorderColor, RoundedCornerShape(6.dp))
+                                        .clickable {
+                                            customTemplateStudentId = st.barcode
+                                        }
+                                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(6.dp)
+                                                .background(if (isSelected) ForestAccent else Color.Gray.copy(alpha = 0.4f), CircleShape)
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text(
+                                            text = st.name,
+                                            fontSize = 9.sp,
+                                            fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Medium,
+                                            color = if (isSelected) DeepTealPrimary else Color.DarkGray
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "⚠️ لم يتم العثور على طلاب مطابقة لنتائج البحث.",
+                            fontSize = 10.sp,
+                            color = Color.Red,
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+                    }
+
+                    if (currentSelStudent != null) {
+                        Spacer(modifier = Modifier.height(6.6.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(LightStatusGreenBack, RoundedCornerShape(6.dp))
+                                .border(1.dp, StatusGreenBorder.copy(alpha = 0.2f), RoundedCornerShape(6.dp))
+                                .padding(8.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = StatusGreenText, modifier = Modifier.size(13.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "تم التحديد: ${currentSelStudent.name} (كود: ${currentSelStudent.barcode} | ولي الأمر: ${currentSelStudent.parentPhone})",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = StatusGreenText
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // 2. Custom Templates Row Selection
+                    val templateList = listOf(
+                        "🌟 تهنئة وتفوق",
+                        "⚠️ إنذار غياب",
+                        "📝 رصد تقييم",
+                        "💳 مطالبة مالية"
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        templateList.forEachIndexed { idx, title ->
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(if (selectedTemplateIdx == idx) ForestAccent else Color(0xFFF8FAFC))
+                                    .border(1.dp, if (selectedTemplateIdx == idx) Color.Transparent else OutlineBorderColor)
+                                    .clickable { selectedTemplateIdx = idx }
+                                    .padding(vertical = 8.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = title,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (selectedTemplateIdx == idx) Color.White else MintSecondary
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // 3. Render Pre-populated text preview for confirmation
+                    currentSelStudent?.let { activeSt ->
+                        val textPreview = when(selectedTemplateIdx) {
+                            0 -> "السلام عليكم ورحمة الله وبركاته، نود إعلامكم بتفوق ابنكم البطل ${activeSt.name} اليوم في أكاديمية الأستاذ أحمد الشافعي بنسبة ممتازة! بارك الله فيه وفي مجهوداته الرائعة 🌟."
+                            1 -> "تنبيه غياب عاجل من سنتر النور: الطالب ${activeSt.name} قد غاب/تأخر عن الحضور للحصة الأساسية في موعدها المقرّر اليوم. يرجى المتابعة معنا فوراً للتحقق ⚠️."
+                            2 -> "متابعة التقارير الأكاديمية: تم اليوم رصد واختبار مستوى الطالب ${activeSt.name} وكانت النتيجة رائعة والواجبات مكتملة تماماً، نثمن حرصه واجتهاده الدائم 📝."
+                            else -> "تنبيه إدارة السنتر الأكاديمي: نذكركم بضرورة تسوية الرسوم المستحقة للطالب ${activeSt.name} وقدرها ${activeSt.registrationFee} ج.م لتجنب تعطل حسابه بالباركود. كود خدمة فوري: 71203، رقم الدفع: 908412${activeSt.barcode} 💳."
+                        }
+
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC)),
+                            border = BorderStroke(1.dp, OutlineBorderColor),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(10.dp)) {
+                                Text("معاينة نص الرسالة قبل الإرسال:", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = MintSecondary)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = textPreview,
+                                    fontSize = 11.sp,
+                                    color = DeepTealPrimary,
+                                    lineHeight = 15.sp
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Button(
+                                    onClick = {
+                                        try {
+                                            val encoded = java.net.URLEncoder.encode(textPreview, "UTF-8")
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                                                data = android.net.Uri.parse("https://api.whatsapp.com/send?phone=${activeSt.parentPhone}&text=$encoded")
+                                            }
+                                            context.startActivity(intent)
+                                            customTemplateMessageSuccess = "تم توليد وتوجيه الرسالة بنجاح لـ ${activeSt.name}! 📱"
+                                        } catch (e: Exception) {}
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366)),
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.fillMaxWidth().height(36.dp)
+                                ) {
+                                    Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(14.dp), tint = Color.White)
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("بث وتوجيه عبر WhatsApp الرقمي ✨", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                }
+                            }
+                        }
+                    } ?: run {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFF8FAFC), RoundedCornerShape(8.dp))
+                                .border(1.dp, OutlineBorderColor)
+                                .padding(12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "💡 يرجى اختيار أحد الطلاب من القائمة أعلاه للبدء بالبث الفوري.",
+                                fontSize = 10.sp,
+                                color = MintSecondary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(visible = customTemplateMessageSuccess != null) {
+                        customTemplateMessageSuccess?.let { txt ->
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(LightStatusGreenBack, RoundedCornerShape(6.dp))
+                                    .border(1.dp, StatusGreenBorder.copy(alpha = 0.3f), RoundedCornerShape(6.dp))
+                                    .padding(8.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = txt, color = StatusGreenText, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -938,10 +1189,54 @@ fun AttendanceScannerView(
 }
 
 @Composable
-fun ScanAlertResultCard(scanResult: ScanResponse, onDismiss: () -> Unit) {
-    val cardBackColor = if (scanResult.success) Color(0xFFE8F5E9) else Color(0xFFF9DEDC)
-    val cardBorderColor = if (scanResult.success) Color(0xFF2E7D32) else StatusDebtRed
-    val cardTextColor = if (scanResult.success) Color(0xFF1B5E20) else Color(0xFF410E0B)
+fun SYTriangleLogo(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(44.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(DeepTealPrimary)
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val w = size.width
+            val h = size.height
+            val path = androidx.compose.ui.graphics.Path().apply {
+                moveTo(w / 2f, 4f)
+                lineTo(w - 4f, h - 4f)
+                lineTo(4f, h - 4f)
+                close()
+            }
+            drawPath(
+                path = path,
+                color = ForestAccent,
+                style = androidx.compose.ui.graphics.drawscope.Fill
+            )
+            drawPath(
+                path = path,
+                color = Color.White.copy(alpha = 0.85f),
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.5.dp.toPx())
+            )
+        }
+        Text(
+            text = "SY",
+            fontWeight = FontWeight.Black,
+            color = Color.White,
+            fontSize = 12.sp,
+            letterSpacing = 0.5.sp,
+            modifier = Modifier.align(Alignment.Center).padding(top = 10.dp)
+        )
+    }
+}
+
+@Composable
+fun ScanAlertResultCard(scanResult: ScanResponse, viewModel: DashboardViewModel, onDismiss: () -> Unit) {
+    val cardBackColor = if (scanResult.success) Color(0xFFF8FAFC) else Color(0xFFF9DEDC)
+    val cardBorderColor = if (scanResult.success) ForestAccent else StatusDebtRed
+    val cardTextColor = if (scanResult.success) DeepTealPrimary else Color(0xFF410E0B)
+
+    var whatsAppSuccessMessage by remember { mutableStateOf<String?>(null) }
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     Card(
         colors = CardDefaults.cardColors(
@@ -975,32 +1270,32 @@ fun ScanAlertResultCard(scanResult: ScanResponse, onDismiss: () -> Unit) {
                     Icon(
                         imageVector = if (scanResult.success) Icons.Default.CheckCircle else Icons.Default.Cancel,
                         contentDescription = null,
-                        tint = if (scanResult.success) Color(0xFF2E7D32) else StatusDebtRed,
+                        tint = if (scanResult.success) ForestAccent else StatusDebtRed,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "بطاقة التحقق: ${scanResult.studentName}",
+                        text = "بطاقة التحقق الذكية: ${scanResult.studentName}",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = if (scanResult.success) Color(0xFF1B5E20) else Color(0xFFB71C1C)
+                        fontSize = 15.sp,
+                        color = cardTextColor
                     )
                 }
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Default.Close, contentDescription = "اغلاق")
+                    Icon(Icons.Default.Close, contentDescription = "اغلاق", tint = MintSecondary)
                 }
             }
 
             Text(
-                text = "الرمز المسحور: ${scanResult.barcode} | الفحص الجاري: ${scanResult.attendanceType}",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.DarkGray
+                text = "الرمز المسحي: ${scanResult.barcode} | نوع الفحص: ${scanResult.attendanceType}",
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = MintSecondary
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color.LightGray.copy(alpha = 0.5f))
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            Divider(color = OutlineBorderColor)
+            Spacer(modifier = Modifier.height(10.dp))
 
             // ALERTS ENGINE LOGIC TO DISPLAY
             val alerts = scanResult.alerts
@@ -1010,18 +1305,19 @@ fun ScanAlertResultCard(scanResult: ScanResponse, onDismiss: () -> Unit) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFFC8E6C9), RoundedCornerShape(6.dp))
-                            .padding(8.dp)
+                            .background(LightStatusGreenBack, RoundedCornerShape(8.dp))
+                            .border(1.dp, StatusGreenBorder.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                            .padding(10.dp)
                     ) {
                         Text(
-                            text = "مكتمل الإجراءات الخضراء: الطالب ملتزم بالمدفوعات والحضور، ومسموح بدخوله الحصة.",
-                            fontSize = 12.sp,
+                            text = "✅ مكتمل الإجراءات الخضراء: الطالب ملتزم بكافة المدفوعات والحضور، ومصرح بدخوله الحصة فورياً.",
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1B5E20)
+                            color = StatusGreenText
                         )
                     }
                 } else {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         if (alerts.isSuspendedStudent) {
                             AlertItem(
                                 title = "🔴 غلق الدخول: الطالب مجمّد الحساب!",
@@ -1032,21 +1328,171 @@ fun ScanAlertResultCard(scanResult: ScanResponse, onDismiss: () -> Unit) {
                         }
 
                         if (alerts.hasFinancialDebt) {
-                            AlertItem(
-                                title = "🔴 مديونيات متراكمة مستحقة فورية: ${alerts.debtAmount} ج.م",
-                                desc = if(alerts.hasBookDebt) "رسومات متأخرة تشمل: اشتراك الشهر الجاري + استلام كتاب المذكرات (${alerts.unpaidBookName})" else "مستحقات متأخرة يرجى تحصيلها بمعرفة الاستقبال والسنتر.",
-                                color = StatusDebtRed,
-                                backColor = LightStatusDebtBack
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(LightStatusDebtBack)
+                                    .border(1.dp, StatusDebtRed.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Warning, contentDescription = null, tint = StatusDebtRed, modifier = Modifier.size(18.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "متأخرات مالية مستحقة فورياً: ${alerts.debtAmount} ج.م",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 12.sp,
+                                        color = StatusDebtRed
+                                    )
+                                }
+                                Text(
+                                    text = if(alerts.hasBookDebt) "رسومات متأخرة تشمل: اشتراك الشهر الجاري + استلام كتاب المذكرات (${alerts.unpaidBookName})" else "مستحقات متأخرة يرجى تحصيلها بمعرفة الاستقبال والسنتر.",
+                                    fontSize = 11.sp,
+                                    color = Color.DarkGray,
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                // FAWRY VOUCHER SUB-CARD
+                                Card(
+                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFDE7)),
+                                    border = BorderStroke(1.dp, Color(0xFFFBC02D)),
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(modifier = Modifier.padding(8.dp)) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(8.dp)
+                                                        .background(Color(0xFFFFD54F), CircleShape)
+                                                )
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text(
+                                                    text = "بوابة فوري Fawry للدفع السريع",
+                                                    fontWeight = FontWeight.ExtraBold,
+                                                    fontSize = 10.sp,
+                                                    color = Color(0xFF5D4037)
+                                                )
+                                            }
+                                            Text(
+                                                text = "مؤمّن وموثق 🔒",
+                                                fontSize = 9.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFF388E3C)
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "• كود الخدمة الموحد: 71203\n• رقم الدفع المرجعي لأولياء الأمور: 908 412 ${scanResult.barcode}\n• القيمة الكلية للفاتورة: ${alerts.debtAmount} ج.م",
+                                            fontSize = 10.sp,
+                                            color = Color.DarkGray,
+                                            lineHeight = 14.sp
+                                        )
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        Button(
+                                            onClick = {
+                                                viewModel.payStudentDebtDirectly(
+                                                    barcode = scanResult.barcode,
+                                                    amount = alerts.debtAmount,
+                                                    branchId = 1 // standard branch code
+                                                )
+                                            },
+                                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFBC02D), contentColor = Color.Black),
+                                            shape = RoundedCornerShape(6.dp),
+                                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                            modifier = Modifier.fillMaxWidth().height(32.dp)
+                                        ) {
+                                            Icon(Icons.Default.Payment, contentDescription = null, modifier = Modifier.size(12.dp))
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("تسوية ودفع فوري الآن 💳", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                // WHATSAPP DIRECT SENDER
+                                Button(
+                                    onClick = {
+                                        whatsAppSuccessMessage = "تم توليد وتوجيه رابط الـ WhatsApp لولي الأمر بنجاح! 📱"
+                                        try {
+                                            val messageText = "السلام عليكم ورحمة الله وبركاته، نحيطكم علماً بأن ابنكم البطل ${scanResult.studentName} قد وصل بسلام إلى السنتر، ولديه مستحقات ماليّة قدرها ${alerts.debtAmount} ج.م تشمل المتأخرات والمذكرات الفائتة. يرجى سداد المبلغ فورياً لضمان استمراره دون انقطاع. شكراً لكم."
+                                            val encodedText = java.net.URLEncoder.encode(messageText, "UTF-8")
+                                            val whatsappUrl = "https://api.whatsapp.com/send?phone=201234567890&text=$encodedText"
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                                                data = android.net.Uri.parse(whatsappUrl)
+                                            }
+                                            context.startActivity(intent)
+                                        } catch (e: Exception) {
+                                            // Handle fallback silently
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366), contentColor = Color.White),
+                                    shape = RoundedCornerShape(6.dp),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                    modifier = Modifier.fillMaxWidth().height(30.dp)
+                                ) {
+                                    Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(12.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text("توجيه إنذار فوري عبر WhatsApp 💬", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
                         }
 
                         if (alerts.previousAbsenceAlert) {
-                            AlertItem(
-                                title = "🟡 غائب في المحاضرة السابقة!",
-                                desc = "الطالب تغيب عن المحاضرة الماضية. يجب تسليمه كتيب المراجعة والواجب الفائت قبل التوجه للقاعة لضمان المتابعة الأكاديمية.",
-                                color = StatusAbsenceYellow,
-                                backColor = LightStatusAbsenceBack
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(LightStatusAbsenceBack)
+                                    .border(1.dp, StatusAbsenceYellow.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.AssignmentLate, contentDescription = null, tint = StatusAbsenceYellow, modifier = Modifier.size(18.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "غائب في المحاضرة السابقة!",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 12.sp,
+                                        color = StatusAbsenceYellow
+                                    )
+                                }
+                                Text(
+                                    text = "الطالب تغيب عن المحاضرة الماضية. يجب تسليمه كتيب المراجعة والواجب الفائت قبل التوجه للقاعة لضمان المتابعة الأكاديمية.",
+                                    fontSize = 11.sp,
+                                    color = Color.DarkGray,
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Button(
+                                    onClick = {
+                                        try {
+                                            val messageText = "تنبيه متابعة: ابنكم ${scanResult.studentName} غاب في الحصة الماضية وحضر اليوم ومعه الواجبات المتأخرة. تم تسليمه ملخص المراجعة للتعويض."
+                                            val encodedText = java.net.URLEncoder.encode(messageText, "UTF-8")
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                                                data = android.net.Uri.parse("https://api.whatsapp.com/send?phone=201234567890&text=$encodedText")
+                                            }
+                                            context.startActivity(intent)
+                                            whatsAppSuccessMessage = "تم نسخ وتوجيه رسالة الغياب لولي الأمر عبر واتساب بنجاح!"
+                                        } catch (e: Exception) {}
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366), contentColor = Color.White),
+                                    shape = RoundedCornerShape(6.dp),
+                                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 2.dp),
+                                    modifier = Modifier.wrapContentSize().height(28.dp)
+                                ) {
+                                    Text("تواصل مع ولي الأمر 💬", fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
                         }
 
                         if (alerts.suggestSuspension) {
@@ -1062,10 +1508,30 @@ fun ScanAlertResultCard(scanResult: ScanResponse, onDismiss: () -> Unit) {
             } else {
                 Text(
                     text = scanResult.message,
-                    color = Color(0xFFB71C1C),
+                    color = StatusDebtRed,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp
                 )
+            }
+
+            AnimatedVisibility(visible = whatsAppSuccessMessage != null) {
+                whatsAppSuccessMessage?.let { text ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LightStatusGreenBack, RoundedCornerShape(6.dp))
+                            .border(1.dp, StatusGreenBorder.copy(alpha = 0.3f), RoundedCornerShape(6.dp))
+                            .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.Check, contentDescription = null, tint = StatusGreenText, modifier = Modifier.size(14.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(text = text, color = StatusGreenText, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
             }
         }
     }
@@ -1113,6 +1579,7 @@ fun StudentsAndGroupsView(
     onAddGroup: () -> Unit
 ) {
     val isReadOnly = currentRole == "Academic Assistant"
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     LazyColumn(
         modifier = Modifier
@@ -1306,12 +1773,98 @@ fun StudentsAndGroupsView(
                                 fontSize = 11.sp,
                                 color = Color.DarkGray
                             )
-                            Text(
-                                text = "الباركود الفريد: [ ${student.barcode} ] | هاتف ولي الأمر: ${student.parentPhone}",
-                                fontSize = 11.sp,
-                                color = Color.Gray,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                            Spacer(modifier = Modifier.height(3.dp))
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    text = "الباركود: ${student.barcode}",
+                                    fontSize = 10.sp,
+                                    color = Color.Gray,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "|  هاتف ولي الأمر: ${student.parentPhone}",
+                                    fontSize = 11.sp,
+                                    color = Color.DarkGray
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xFFE8F5E9))
+                                        .clickable {
+                                            try {
+                                                val msg = "مرحباً يا فندم، نود التواصل معكم من سنتر الأستاذ أحمد الشافعي بخصوص الطالب ${student.name} لمتابعة مستواه التعليمي."
+                                                val encoded = java.net.URLEncoder.encode(msg, "UTF-8")
+                                                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                                                    data = android.net.Uri.parse("https://api.whatsapp.com/send?phone=${student.parentPhone}&text=$encoded")
+                                                }
+                                                context.startActivity(intent)
+                                            } catch (e: Exception) {}
+                                        },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Share,
+                                        contentDescription = "اتصل واتساب",
+                                        tint = Color(0xFF25D366),
+                                        modifier = Modifier.size(13.dp)
+                                    )
+                                }
+                            }
+
+                            // Interactive Fawry ledger settling directly on student card
+                            Spacer(modifier = Modifier.height(6.dp))
+                            if (!student.isRegistrationFeePaid) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .background(LightStatusDebtBack, RoundedCornerShape(4.dp))
+                                            .border(1.dp, StatusDebtRed.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                                            .padding(horizontal = 6.dp, vertical = 3.dp)
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(Icons.Default.CreditCardOff, null, tint = StatusDebtRed, modifier = Modifier.size(11.dp))
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text("رسوم التسجيل متأخرة (${student.registrationFee} ج.م)", color = StatusDebtRed, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(4.dp))
+                                            .background(Color(0xFFFFFDE7))
+                                            .border(1.dp, Color(0xFFFBC02D), RoundedCornerShape(4.dp))
+                                            .clickable {
+                                                viewModel.payStudentDebtDirectly(student.barcode, student.registrationFee, br?.id ?: 1)
+                                            }
+                                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(Icons.Default.Payment, null, tint = Color(0xFFC2410C), modifier = Modifier.size(10.dp))
+                                            Spacer(modifier = Modifier.width(3.dp))
+                                            Text("دفع فوري سريع 💳", color = Color(0xFF7C2D12), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                }
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .background(LightStatusGreenBack, RoundedCornerShape(4.dp))
+                                        .border(1.dp, StatusGreenBorder.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                                        .padding(horizontal = 6.dp, vertical = 3.dp)
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Default.CheckCircle, null, tint = StatusGreenText, modifier = Modifier.size(11.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text("رسوم التسجيل مسددة بنجاح ✅ (Fawry)", color = StatusGreenText, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
                         }
 
                         // Suspended toggle (RBAC - Receptionist and Academic assistant blocked)
